@@ -20,7 +20,7 @@ npm run setup
 npm run dev
 ```
 
-`npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe cualquier correo y se abre el enlace que llega al buzón local, en http://localhost:54724. El enlace apunta al puerto 3000, así que la app tiene que correr ahí.
+`npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe un correo y se abre el enlace que llega al buzón local, en http://localhost:54724. La base trae una persona de ejemplo con su emisor, `mariana@ejemplo.test`; cualquier otro correo entra sin emisor. El enlace apunta al puerto 3000, así que la app tiene que correr ahí.
 
 Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` y `npm run build`.
 

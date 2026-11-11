@@ -14,10 +14,6 @@ shadow_port = 54720
 # La misma versión mayor de Postgres que el proyecto en la nube.
 major_version = 17
 
-# Todavía no hay datos de prueba que cargar.
-[db.seed]
-enabled = false
-
 [studio]
 port = 54723
 

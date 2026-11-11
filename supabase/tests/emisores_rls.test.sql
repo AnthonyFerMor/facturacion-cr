@@ -1,7 +1,7 @@
 -- Un usuario solo llega a su propio emisor. Si esto falla, un emisor podría leer
 -- los datos fiscales de otro o emitir a su nombre.
 begin;
-select plan(9);
+select plan(10);
 
 -- Dos usuarios y sus emisores, con datos inventados.
 insert into auth.users (id, email) values
@@ -66,6 +66,15 @@ select throws_ok(
   '23505',
   null,
   'Ana no crea un segundo emisor'
+);
+
+-- Dos emisores no comparten identificación, aunque sean de usuarios distintos.
+select throws_ok(
+  $$ update public.emisores set numero_identificacion = '000000002'
+     where usuario_id = '11111111-1111-4111-8111-111111111111' $$,
+  '23505',
+  null,
+  'Ana no toma la identificación de Beto'
 );
 
 select throws_ok(
