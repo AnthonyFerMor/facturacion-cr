@@ -7,10 +7,13 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const ARCHIVO_ENV = ".env.local";
 
-function supabase(argumentos, { capturar = false } = {}) {
+// La salida normal de la CLI trae las llaves de la instancia local, así que no se
+// muestra: ni en la terminal ni en el registro de la integración continua.
+// El avance y los errores salen por stderr y sí se ven.
+function supabase(argumentos) {
   return execFileSync("npx", ["supabase", ...argumentos], {
     encoding: "utf8",
-    stdio: ["ignore", capturar ? "pipe" : "inherit", "inherit"],
+    stdio: ["ignore", "pipe", "inherit"],
   });
 }
 
@@ -34,9 +37,7 @@ function escribirVariables(variables) {
 supabase(["start"]);
 supabase(["migration", "up"]);
 
-const estado = JSON.parse(
-  supabase(["status", "--output", "json"], { capturar: true }),
-);
+const estado = JSON.parse(supabase(["status", "--output", "json"]));
 escribirVariables({
   NEXT_PUBLIC_SUPABASE_URL: estado.API_URL,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: estado.PUBLISHABLE_KEY,
