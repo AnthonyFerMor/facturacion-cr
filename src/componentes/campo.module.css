@@ -1,0 +1,46 @@
+.campo {
+  display: grid;
+  gap: 6px;
+}
+
+.campo label {
+  font: 400 var(--letra-etiqueta) var(--sans);
+  color: var(--texto-2);
+}
+
+.campo input {
+  width: 100%;
+  min-width: 0;
+  height: var(--alto-control);
+  padding: 0 var(--e3);
+  border: 1px solid var(--borde-campo);
+  border-radius: var(--radio-control);
+  background: var(--tarjeta);
+  transition: border-color var(--rapido) var(--curva);
+}
+
+.campo input:hover {
+  border-color: var(--texto-2);
+}
+
+.campo input[aria-invalid="true"] {
+  border-color: var(--mal);
+}
+
+.ayuda {
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--texto-3);
+}
+
+.error {
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--mal-tinta);
+}
+
+/* En un teléfono, iOS agranda la página si la letra del campo mide menos de 16 px. */
+@media (pointer: coarse) {
+  .campo input {
+    height: var(--alto-control-ancho);
+    font: 400 var(--letra-campo-tactil) var(--sans);
+  }
+}

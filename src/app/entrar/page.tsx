@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import estilos from "./entrar.module.css";
 import { FormularioEntrar } from "./formulario";
 
 export const metadata: Metadata = { title: "Entrar a Facturación CR" };
@@ -9,13 +10,20 @@ type Parametros = PageProps<"/entrar">["searchParams"];
 
 export default function PaginaEntrar({ searchParams }: PageProps<"/entrar">) {
   return (
-    <main>
-      <h1>Entrar a Facturación CR</h1>
-      <p>Escriba su correo y le llega un enlace para entrar, sin contraseña.</p>
-      <Suspense>
-        <AvisoDeEnlace parametros={searchParams} />
-      </Suspense>
-      <FormularioEntrar />
+    <main className={estilos.pagina}>
+      <div className={estilos.hoja}>
+        <div className={estilos.membrete}>
+          <p className={estilos.marca}>Facturación CR</p>
+          <p className={estilos.descripcion}>
+            Factura electrónica de exportación
+          </p>
+        </div>
+        <FormularioEntrar>
+          <Suspense>
+            <AvisoDeEnlace parametros={searchParams} />
+          </Suspense>
+        </FormularioEntrar>
+      </div>
     </main>
   );
 }
@@ -26,5 +34,9 @@ async function AvisoDeEnlace({ parametros }: { parametros: Parametros }) {
   if (error !== "enlace") {
     return null;
   }
-  return <p role="alert">Ese enlace venció o ya se usó. Pida uno nuevo.</p>;
+  return (
+    <p className={estilos.aviso} role="alert">
+      Ese enlace venció o ya se usó. Pida uno nuevo.
+    </p>
+  );
 }

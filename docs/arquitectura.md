@@ -24,6 +24,7 @@ Todo lo que firma o habla con Hacienda corre en el servidor. El SDK pide Node 22
 ```
 src/
   app/          pantallas y rutas de Next.js
+  componentes/  piezas de interfaz compartidas: botón, campo, tabla y estado
   dominio/      reglas sin dependencias externas: montos, impuestos, clave, fechas y estados
   hacienda/     armado y firma del XML con el SDK, y la pasarela: interfaz, simulador e implementación con el SDK
   servidor/     acciones del servidor, procesador de trabajos, cifrado, correo y PDF

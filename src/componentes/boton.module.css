@@ -1,0 +1,47 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+  height: var(--alto-control);
+  padding: 0 var(--e4);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio-control);
+  background: var(--tarjeta);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--rapido) var(--curva),
+    border-color var(--rapido) var(--curva),
+    transform var(--rapido) var(--curva);
+}
+
+.boton:hover {
+  background: var(--elevado);
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.principal {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #ffffff;
+}
+
+.principal:hover {
+  background: var(--acento-fuerte);
+  border-color: var(--acento-fuerte);
+}
+
+.ancho {
+  width: 100%;
+  height: var(--alto-control-ancho);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}

@@ -19,3 +19,6 @@
 - Espacios en múltiplos de 4 px.
 - La versión 1 solo tiene tema claro.
 - El modo simulado se dice siempre en la barra superior, con texto.
+- El borde de un campo tiene contraste de 3:1 con su fondo, porque es lo único que lo delimita.
+
+Los valores están una sola vez en `src/app/globals.css`, y los componentes compartidos en `src/componentes/` ([decisión 0012](decisiones/0012-estilos-con-css-modules.md)).
