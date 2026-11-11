@@ -4,11 +4,22 @@
 
 A web app for electronic invoicing in Costa Rica, made for freelancers who bill clients abroad. It issues the export invoice (document type 09, version 4.4) in US dollars, sends it to the tax authority (Ministerio de Hacienda), follows it until it is accepted or rejected, and keeps the signed XML, the PDF and the response.
 
-Status: planning. There is no code yet. The plan and the design decisions are in `docs/`, in Spanish.
+Status: early development. The project runs, but it has no screens yet. The plan and the design decisions are in `docs/`, in Spanish, and the work is tracked in the [milestones](https://github.com/AnthonyFerMor/facturacion-cr/milestones).
 
 ## Why it exists
 
 It is a complete, open implementation of the life cycle of an invoice on top of the open source [hacienda-cr](https://github.com/DojoCodingLabs/hacienda-cr) SDK: build, sign, send, track, deliver and archive. Hacienda already has a free invoicing tool, Tico Factura, and this project does not try to replace it.
+
+## Run it locally
+
+You need Node 24 and npm.
+
+```bash
+npm install
+npm run dev
+```
+
+The app opens at http://localhost:3000. Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test` and `npm run build`.
 
 ## Documents (in Spanish)
 

@@ -1,0 +1,3 @@
+# Prettier es para el código. En Markdown rellena cada tabla hasta el ancho
+# de su celda más larga, y los documentos tienen tablas con celdas largas.
+*.md

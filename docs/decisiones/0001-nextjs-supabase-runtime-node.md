@@ -10,6 +10,8 @@ El SDK hacienda-cr se publica solo como ESM, pide Node 22 o superior y usa `node
 
 Next.js 16 (App Router, TypeScript estricto) desplegado en Vercel, y Supabase para Postgres, Auth, Storage y pg_cron. En Next.js 16 las rutas y las acciones del servidor corren en Node por defecto, así que el runtime no se declara. Node 24 queda fijado en `engines`: es el mismo en local, en la integración continua y en Vercel.
 
+La app usa Cache Components, el modo que la plantilla de Next.js 16 trae activado y que, según su documentación, será el único en la próxima versión mayor. Los datos se leen en cada solicitud salvo que se pida guardarlos en caché, y lo que depende de la sesión se muestra dentro de un `<Suspense>`.
+
 ## Alternativas descartadas
 
 - Supabase Edge Functions: corren en Deno, y nada en el SDK indica que funcione ahí.
