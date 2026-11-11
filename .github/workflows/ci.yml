@@ -3,7 +3,7 @@ name: Integración continua
 on:
   pull_request:
   push:
-    branches: [main, 5-integracion-continua]
+    branches: [main]
 
 # Un push nuevo a la misma rama cancela la corrida anterior.
 concurrency:
