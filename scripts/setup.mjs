@@ -11,10 +11,18 @@ const ARCHIVO_ENV = ".env.local";
 // muestra: ni en la terminal ni en el registro de la integración continua.
 // El avance y los errores salen por stderr y sí se ven.
 function supabase(argumentos) {
-  return execFileSync("npx", ["supabase", ...argumentos], {
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "inherit"],
-  });
+  try {
+    return execFileSync("npx", ["supabase", ...argumentos], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "inherit"],
+    });
+  } catch {
+    // La CLI ya explicó la falla por stderr; la traza de Node no agrega nada.
+    console.error(
+      `\nNo se pudo dejar listo el entorno: falló "supabase ${argumentos.join(" ")}".`,
+    );
+    process.exit(1);
+  }
 }
 
 /** Cambia o agrega cada variable y deja igual el resto del archivo. */
