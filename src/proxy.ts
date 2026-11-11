@@ -37,10 +37,8 @@ export async function proxy(solicitud: NextRequest) {
   // y una cookie se puede falsificar.
   const { data } = await supabase.auth.getClaims();
 
-  const ruta = solicitud.nextUrl.pathname;
-  const pideSesion = !RUTAS_SIN_SESION.some((publica) =>
-    ruta.startsWith(publica),
-  );
+  // La comparación es exacta: una ruta que solo empieza igual que una pública pide sesión.
+  const pideSesion = !RUTAS_SIN_SESION.includes(solicitud.nextUrl.pathname);
   if (!data && pideSesion) {
     const destino = solicitud.nextUrl.clone();
     destino.pathname = "/entrar";
