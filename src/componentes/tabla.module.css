@@ -1,6 +1,8 @@
 /* Sin `contain`, el ancho de la tabla empuja a la página en una pantalla angosta
    aunque esta caja tenga su propio desplazamiento. */
 .envoltura {
+  /* Ancla el título oculto, para que se desplace con la tabla. */
+  position: relative;
   overflow-x: auto;
   contain: inline-size;
 }
@@ -31,7 +33,7 @@
 }
 
 .tabla td {
-  height: 48px;
+  height: var(--alto-fila);
   padding: 0 var(--e3);
   white-space: nowrap;
   border-bottom: 1px solid var(--linea);

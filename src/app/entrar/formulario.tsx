@@ -10,13 +10,17 @@ import estilos from "./entrar.module.css";
 
 const INICIAL: EstadoEntrar = { paso: "formulario", correo: "" };
 
-/** `children` es el aviso que la página muestra entre el título y el formulario. */
+/**
+ * `children` es el aviso que la página muestra entre el título y el formulario.
+ * Solo acompaña al primer intento: después de pedir un enlace nuevo, el aviso de
+ * que el anterior venció ya no dice nada útil.
+ */
 export function FormularioEntrar({ children }: { children: ReactNode }) {
   // Cambiar la llave vuelve a montar el formulario, vacío, para pedir el enlace con otro correo.
   const [intento, setIntento] = useState(0);
   return (
     <Formulario key={intento} otroCorreo={() => setIntento(intento + 1)}>
-      {children}
+      {intento === 0 ? children : null}
     </Formulario>
   );
 }

@@ -2,7 +2,8 @@ import type { ButtonHTMLAttributes } from "react";
 
 import estilos from "./boton.module.css";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+// Sin `className`: el aspecto del botón sale solo de sus variantes.
+type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
   /** La acción principal de la pantalla lleva el acento. Hay una sola por pantalla. */
   variante?: "principal" | "secundario";
   /** Ocupa todo el ancho y es más alto: para el botón de un formulario corto. */

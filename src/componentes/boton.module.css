@@ -16,10 +16,6 @@
     transform var(--rapido) var(--curva);
 }
 
-.boton:hover {
-  background: var(--elevado);
-}
-
 .boton:active {
   transform: scale(0.98);
 }
@@ -27,12 +23,20 @@
 .principal {
   background: var(--acento);
   border-color: var(--acento);
-  color: #ffffff;
+  color: var(--sobre-acento);
 }
 
-.principal:hover {
-  background: var(--acento-fuerte);
-  border-color: var(--acento-fuerte);
+/* Solo con puntero y con el botón activo: en una pantalla táctil el color quedaría
+   pegado después de tocar, y un botón deshabilitado no tiene que parecer que responde. */
+@media (hover: hover) {
+  .boton:enabled:hover {
+    background: var(--elevado);
+  }
+
+  .principal:enabled:hover {
+    background: var(--acento-fuerte);
+    border-color: var(--acento-fuerte);
+  }
 }
 
 .ancho {

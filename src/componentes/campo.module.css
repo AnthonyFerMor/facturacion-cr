@@ -1,6 +1,6 @@
 .campo {
   display: grid;
-  gap: 6px;
+  gap: var(--e2);
 }
 
 .campo label {

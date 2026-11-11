@@ -12,10 +12,12 @@
   /* El borde de un campo tiene contraste de 3:1 con el blanco: es lo único que lo delimita. */
   --borde-campo: #8f8f8f;
 
-  /* Un solo acento: el azul de tinta. */
+  /* Un solo acento: el azul de tinta. El ícono (icon.svg) repite este valor,
+     porque un SVG suelto no lee las propiedades de la página. */
   --acento: #1b3c9e;
   --acento-fuerte: #17337f;
   --acento-suave: rgba(27, 60, 158, 0.18);
+  --sobre-acento: #ffffff;
 
   /* Estados. Los tonos "tinta" son para texto. */
   --ok: #16a34a;
@@ -26,6 +28,7 @@
   --mal-linea: rgba(185, 28, 28, 0.25);
   --espera: #d97706;
   --neutro: #a3a3a3;
+  --barra-desplazamiento: #c4c4c4;
 
   /* Espacios: múltiplos de 4 px. */
   --e1: 4px;
@@ -48,6 +51,7 @@
 
   --alto-control: 36px;
   --alto-control-ancho: 44px;
+  --alto-fila: 48px;
   --radio-control: 8px;
   --radio-tarjeta: 12px;
   --radio-hoja: 4px;
@@ -62,7 +66,7 @@
 }
 
 html {
-  scrollbar-color: #c4c4c4 transparent;
+  scrollbar-color: var(--barra-desplazamiento) transparent;
   scrollbar-width: thin;
 }
 
@@ -80,7 +84,6 @@ body {
 :focus-visible {
   outline: 2px solid var(--acento);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 h1,
@@ -96,7 +99,8 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
   color: inherit;
 }
