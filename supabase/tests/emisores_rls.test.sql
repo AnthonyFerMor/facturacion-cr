@@ -1,7 +1,7 @@
 -- Un usuario solo llega a su propio emisor. Si esto falla, un emisor podría leer
 -- los datos fiscales de otro o emitir a su nombre.
 begin;
-select plan(8);
+select plan(9);
 
 -- Dos usuarios y sus emisores, con datos inventados.
 insert into auth.users (id, email) values
@@ -55,6 +55,17 @@ select throws_ok(
   '42501',
   null,
   'Ana no crea un emisor a nombre de Beto'
+);
+
+-- La política deja pasar esta fila, que es de Ana: la frena la regla de un emisor por usuario.
+select throws_ok(
+  $$ insert into public.emisores
+       (usuario_id, tipo_identificacion, numero_identificacion, nombre, correo, actividad_economica)
+     values
+       ('11111111-1111-4111-8111-111111111111', '02', '0000000004', 'Ana Dos', 'ana@ejemplo.test', '000000') $$,
+  '23505',
+  null,
+  'Ana no crea un segundo emisor'
 );
 
 select throws_ok(
