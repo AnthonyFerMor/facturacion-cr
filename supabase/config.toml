@@ -36,6 +36,7 @@ enabled = false
 enabled = false
 
 [auth]
+# El enlace del correo se arma con esta dirección: en local la app tiene que correr en el puerto 3000.
 site_url = "http://localhost:3000"
 # En local entra cualquiera con su correo. En la nube el registro está cerrado (decisión 0009).
 enable_signup = true
