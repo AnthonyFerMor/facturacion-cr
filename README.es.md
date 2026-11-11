@@ -12,14 +12,17 @@ Es una implementación completa y abierta del ciclo de un comprobante sobre el S
 
 ## Cómo levantarlo
 
-Hace falta Node 24 y npm.
+Hacen falta Node 24, npm y Docker.
 
 ```bash
 npm install
+npm run setup
 npm run dev
 ```
 
-La app abre en http://localhost:3000. Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test` y `npm run build`.
+`npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe cualquier correo y se abre el enlace que llega al buzón local, en http://localhost:54724.
+
+Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` y `npm run build`.
 
 ## Documentos
 

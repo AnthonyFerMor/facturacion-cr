@@ -12,14 +12,17 @@ It is a complete, open implementation of the life cycle of an invoice on top of 
 
 ## Run it locally
 
-You need Node 24 and npm.
+You need Node 24, npm and Docker.
 
 ```bash
 npm install
+npm run setup
 npm run dev
 ```
 
-The app opens at http://localhost:3000. Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test` and `npm run build`.
+`npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type any email address and open the link that arrives in the local mailbox at http://localhost:54724.
+
+Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` and `npm run build`.
 
 ## Documents (in Spanish)
 
