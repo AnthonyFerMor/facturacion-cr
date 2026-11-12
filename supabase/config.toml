@@ -1,0 +1,52 @@
+#:schema https://supabase.com/schemas/config/v1.json
+# Supabase local. Lo que no aparece acá usa el valor por defecto de la CLI:
+# https://supabase.com/docs/guides/local-development/cli/config
+
+project_id = "facturacion-cr"
+
+# Puertos propios (547xx), para convivir con otros proyectos de Supabase en la misma máquina.
+[api]
+port = 54721
+
+[db]
+port = 54722
+shadow_port = 54720
+# La misma versión mayor de Postgres que el proyecto en la nube.
+major_version = 17
+
+# Todavía no hay datos de prueba que cargar.
+[db.seed]
+enabled = false
+
+[studio]
+port = 54723
+
+# Mailpit: acá llegan los correos que la app manda en local.
+[local_smtp]
+port = 54724
+
+# Servicios que la app no usa.
+[realtime]
+enabled = false
+
+[edge_runtime]
+enabled = false
+
+[analytics]
+enabled = false
+
+[auth]
+# El enlace del correo se arma con esta dirección: en local la app tiene que correr en el puerto 3000.
+site_url = "http://localhost:3000"
+# En local entra cualquiera con su correo. En la nube el registro está cerrado (decisión 0009).
+enable_signup = true
+
+# El enlace lleva un token que la app canjea en /auth/confirmar. La primera vez que entra un correo,
+# Supabase usa la plantilla de confirmación; después, la del enlace de entrada. Son el mismo archivo.
+[auth.email.template.magic_link]
+subject = "Su enlace para entrar a Facturación CR"
+content_path = "./supabase/templates/enlace-de-entrada.html"
+
+[auth.email.template.confirmation]
+subject = "Su enlace para entrar a Facturación CR"
+content_path = "./supabase/templates/enlace-de-entrada.html"
