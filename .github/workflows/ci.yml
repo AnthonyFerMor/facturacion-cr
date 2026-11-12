@@ -1,0 +1,47 @@
+name: Integración continua
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Un push nuevo a la misma rama cancela la corrida anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      # Las acciones van fijadas por commit, con su versión en el comentario.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          cache: npm
+      - run: npm ci
+      - name: Formato
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
+      - name: Tipos
+        run: npm run typecheck
+      - name: Pruebas unitarias
+        run: npm test
+      - name: Supabase local
+        run: npm run setup
+      - name: Los tipos generados desde la base están al día
+        run: |
+          npm run db:types
+          git diff --exit-code -- src/servidor/supabase/tipos.ts
+      - name: Pruebas de la base
+        run: npm run test:db
+      - name: Build
+        run: npm run build
