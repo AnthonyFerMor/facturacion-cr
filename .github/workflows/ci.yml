@@ -18,6 +18,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      # Los puertos de supabase/config.toml caen en el rango que Linux usa para
+      # conexiones salientes. Reservados, ninguna conexión (por ejemplo, las de
+      # Docker al bajar imágenes) los ocupa antes de que Supabase arranque.
+      - name: Reservar los puertos de Supabase
+        run: sudo sysctl -w net.ipv4.ip_local_reserved_ports=54720-54724
       # Las acciones van fijadas por commit, con su versión en el comentario.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
