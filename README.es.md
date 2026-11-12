@@ -4,7 +4,7 @@
 
 App web de facturación electrónica de Costa Rica para trabajadores independientes que les cobran a clientes del exterior. Emite la factura electrónica de exportación (tipo 09, versión 4.4) en dólares, la envía a Hacienda, le da seguimiento hasta que la aceptan o la rechazan, y guarda el XML firmado, el PDF y la respuesta.
 
-Estado: en desarrollo inicial. El proyecto corre, pero todavía no tiene pantallas. El plan y las decisiones de diseño están en `docs/`, y el avance se sigue en los [milestones](https://github.com/AnthonyFerMor/facturacion-cr/milestones).
+Estado: en desarrollo. Se entra con un enlace por correo y se guardan el emisor, los clientes del exterior y los servicios; todavía no emite facturas. El plan y las decisiones de diseño están en `docs/`, y el avance se sigue en los [milestones](https://github.com/AnthonyFerMor/facturacion-cr/milestones).
 
 ## Por qué existe
 
@@ -20,7 +20,7 @@ npm run setup
 npm run dev
 ```
 
-`npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe un correo y se abre el enlace que llega al buzón local, en http://localhost:54724. La base trae una persona de ejemplo, `mariana@ejemplo.test`, con su emisor y dos clientes; cualquier otro correo entra sin emisor. El enlace apunta al puerto 3000, así que la app tiene que correr ahí.
+`npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe un correo y se abre el enlace que llega al buzón local, en http://localhost:54724. La base trae una persona de ejemplo, `mariana@ejemplo.test`, con su emisor, dos clientes y dos servicios; cualquier otro correo entra sin emisor. El enlace apunta al puerto 3000, así que la app tiene que correr ahí.
 
 Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` y `npm run build`.
 

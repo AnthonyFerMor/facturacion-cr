@@ -25,6 +25,15 @@
   gap: var(--e4);
 }
 
+/* Dos campos lado a lado. Cada uno conserva su alto: si uno muestra un error, el
+   otro no se estira. */
+.dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: var(--e4);
+}
+
 .pie {
   display: flex;
   flex-wrap: wrap;

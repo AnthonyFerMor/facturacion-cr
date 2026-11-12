@@ -94,6 +94,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      servicios: {
+        Row: {
+          codigo_cabys: string;
+          creado_en: string;
+          descripcion_cabys: string;
+          detalle: string;
+          emisor_id: string;
+          id: string;
+          moneda: string;
+          precio_unitario: number;
+          unidad_medida: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          codigo_cabys: string;
+          creado_en?: string;
+          descripcion_cabys: string;
+          detalle: string;
+          emisor_id?: string;
+          id?: string;
+          moneda: string;
+          precio_unitario: number;
+          unidad_medida: string;
+        };
+        Update: {
+          codigo_cabys?: string;
+          creado_en?: string;
+          descripcion_cabys?: string;
+          detalle?: string;
+          emisor_id?: string;
+          id?: string;
+          moneda?: string;
+          precio_unitario?: number;
+          unidad_medida?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "servicios_emisor_id_fkey";
+            columns: ["emisor_id"];
+            isOneToOne: false;
+            referencedRelation: "emisores";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;

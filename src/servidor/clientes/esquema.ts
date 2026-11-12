@@ -73,8 +73,3 @@ export function revisarCliente(valores: ValoresDelCliente): RevisionDelCliente {
 export function valoresDelFormulario(datos: FormData): ValoresDelCliente {
   return valoresDe(datos, CAMPOS_DEL_CLIENTE);
 }
-
-/** Dice si un texto tiene la forma del `id` de un cliente. */
-export function esIdDeCliente(texto: string): boolean {
-  return z.uuid().safeParse(texto).success;
-}

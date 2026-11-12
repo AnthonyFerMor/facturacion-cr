@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { Aviso } from "@/componentes/aviso";
 import { EnlaceBoton } from "@/componentes/boton";
+import { Listado } from "@/componentes/listado";
 import { Pagina } from "@/componentes/pagina";
 import { Tabla } from "@/componentes/tabla";
 import { Vacio } from "@/componentes/vacio";
@@ -60,34 +61,33 @@ async function ListaDeClientes() {
   }
 
   return (
-    <div className={estilos.lista}>
-      <div className={estilos.acciones}>
+    <Listado
+      accion={
         <EnlaceBoton href="/clientes/nuevo" variante="principal">
           Nuevo cliente
         </EnlaceBoton>
-      </div>
-      <div className={estilos.tarjeta}>
-        <Tabla titulo="Clientes">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Identificación</th>
-              <th>Correo</th>
+      }
+    >
+      <Tabla titulo="Clientes">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Identificación</th>
+            <th>Correo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clientes.map((cliente) => (
+            <tr key={cliente.id}>
+              <td>
+                <Link href={`/clientes/${cliente.id}`}>{cliente.nombre}</Link>
+              </td>
+              <td>{cliente.numero_identificacion}</td>
+              <td>{cliente.correo}</td>
             </tr>
-          </thead>
-          <tbody>
-            {clientes.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>
-                  <Link href={`/clientes/${cliente.id}`}>{cliente.nombre}</Link>
-                </td>
-                <td>{cliente.numero_identificacion}</td>
-                <td>{cliente.correo}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Tabla>
-      </div>
-    </div>
+          ))}
+        </tbody>
+      </Tabla>
+    </Listado>
   );
 }

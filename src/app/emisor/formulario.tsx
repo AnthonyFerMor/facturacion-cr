@@ -6,13 +6,14 @@ import { Aviso } from "@/componentes/aviso";
 import { Boton } from "@/componentes/boton";
 import { Campo } from "@/componentes/campo";
 import forma from "@/componentes/formulario.module.css";
+import { Opciones } from "@/componentes/opciones";
 import { Seleccion } from "@/componentes/seleccion";
 import { useFormulario } from "@/componentes/use-formulario";
 import {
   TIPOS_DE_IDENTIFICACION,
   tipoDeIdentificacion,
 } from "@/dominio/identificacion";
-import type { Actividad, ConsultaDeActividades } from "@/hacienda/api-publica";
+import type { ConsultaDeActividades } from "@/hacienda/api-publica";
 import {
   buscarActividades,
   guardarEmisor,
@@ -162,8 +163,20 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
       <fieldset className={forma.grupo}>
         <legend className={forma.leyenda}>Actividad económica</legend>
         <div className={forma.campos}>
-          <ListaDeActividades
-            actividades={actividades}
+          {/* Las actividades que devolvió Hacienda. Elegir una llena el código. */}
+          <Opciones
+            etiqueta="Actividades inscritas en Hacienda"
+            opciones={actividades.map((actividad) => ({
+              valor: actividad.codigo,
+              codigo: actividad.codigo,
+              descripcion: actividad.descripcion,
+              nota:
+                actividad.codigo === valores.actividad_economica
+                  ? "Elegida"
+                  : actividad.principal
+                    ? "Principal"
+                    : "Secundaria",
+            }))}
             elegida={valores.actividad_economica}
             alElegir={(codigo) => cambiar("actividad_economica", codigo)}
           />
@@ -184,7 +197,7 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
       <fieldset className={forma.grupo}>
         <legend className={forma.leyenda}>Numeración</legend>
         <div className={forma.campos}>
-          <div className={estilos.dos}>
+          <div className={forma.dos}>
             <Campo
               name="sucursal"
               etiqueta="Sucursal"
@@ -223,51 +236,6 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
       </div>
       {estado.error && respuestaVigente ? <Aviso>{estado.error}</Aviso> : null}
     </form>
-  );
-}
-
-/** Las actividades que devolvió Hacienda. Elegir una llena el código de actividad. */
-function ListaDeActividades({
-  actividades,
-  elegida,
-  alElegir,
-}: {
-  actividades: Actividad[];
-  elegida: string;
-  alElegir: (codigo: string) => void;
-}) {
-  if (actividades.length === 0) {
-    return null;
-  }
-  return (
-    <div
-      className={estilos.actividades}
-      role="group"
-      aria-label="Actividades inscritas en Hacienda"
-    >
-      {actividades.map((actividad) => {
-        const esLaElegida = actividad.codigo === elegida;
-        return (
-          <button
-            key={actividad.codigo}
-            type="button"
-            className={estilos.actividad}
-            aria-pressed={esLaElegida}
-            onClick={() => alElegir(actividad.codigo)}
-          >
-            <span className={estilos.codigo}>{actividad.codigo}</span>
-            <span className={estilos.descripcion}>{actividad.descripcion}</span>
-            <span className={estilos.nota}>
-              {esLaElegida
-                ? "Elegida"
-                : actividad.principal
-                  ? "Principal"
-                  : "Secundaria"}
-            </span>
-          </button>
-        );
-      })}
-    </div>
   );
 }
 

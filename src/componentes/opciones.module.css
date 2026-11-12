@@ -1,0 +1,58 @@
+.opciones {
+  display: grid;
+  gap: var(--e2);
+}
+
+.opcion {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--e3);
+  width: 100%;
+  min-height: var(--alto-control-ancho);
+  padding: var(--e3);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio-control);
+  background: var(--tarjeta);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--rapido) var(--curva),
+    border-color var(--rapido) var(--curva);
+}
+
+@media (hover: hover) {
+  .opcion:hover {
+    background: var(--elevado);
+  }
+}
+
+.opcion:active {
+  background: var(--elevado);
+}
+
+/* La elegida se distingue por el borde y por su texto, no solo por el color. */
+.opcion[aria-pressed="true"] {
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.opcion[aria-pressed="true"] .nota {
+  font-weight: 500;
+  color: var(--acento);
+}
+
+.codigo {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.descripcion {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nota {
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--texto-3);
+}

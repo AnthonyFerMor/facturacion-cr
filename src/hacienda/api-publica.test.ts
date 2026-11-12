@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { consultarActividades } from "./api-publica";
+import { buscarEnCabys, consultarActividades } from "./api-publica";
 
 /** Una respuesta con la forma que devuelve `/fe/ae`, con datos inventados. */
 const RESPUESTA_DE_HACIENDA = {
@@ -121,6 +121,97 @@ describe("consulta de actividades económicas en Hacienda", () => {
     hacerQueHaciendaResponda(200, { nombre: "SIN ACTIVIDADES" });
 
     expect(await consultarActividades("100000042")).toEqual({
+      ok: false,
+      motivo: "sin-respuesta",
+    });
+  });
+});
+
+/** Un código con la forma que devuelve `/fe/cabys`. */
+const DESARROLLO_DE_SOFTWARE = {
+  codigo: "8314300000000",
+  descripcion: "Servicios de diseño y  desarrollo de software originales ",
+  categorias: ["Servicios prestados a las empresas y servicios de producción"],
+  impuesto: 13,
+  uri: "https://api.hacienda.go.cr/fe/cabys?codigo=8314300000000",
+  estado: "",
+};
+
+const ENCONTRADO = {
+  ok: true,
+  resultados: [
+    {
+      codigo: "8314300000000",
+      descripcion: "Servicios de diseño y desarrollo de software originales",
+    },
+  ],
+};
+
+describe("búsqueda en el catálogo CAByS", () => {
+  it("busca por las palabras de la descripción", async () => {
+    const consulta = hacerQueHaciendaResponda(200, {
+      total: 1,
+      cantidad: 1,
+      cabys: [DESARROLLO_DE_SOFTWARE],
+    });
+
+    expect(await buscarEnCabys("desarrollo de software")).toEqual(ENCONTRADO);
+    expect(consulta).toHaveBeenCalledWith(
+      "https://api.hacienda.go.cr/fe/cabys?q=desarrollo%20de%20software",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+  });
+
+  // Por código, Hacienda devuelve la lista sin el objeto que la envuelve.
+  it("con 13 dígitos busca por código", async () => {
+    const consulta = hacerQueHaciendaResponda(200, [DESARROLLO_DE_SOFTWARE]);
+
+    expect(await buscarEnCabys("8314300000000")).toEqual(ENCONTRADO);
+    expect(consulta).toHaveBeenCalledWith(
+      "https://api.hacienda.go.cr/fe/cabys?codigo=8314300000000",
+      expect.anything(),
+    );
+  });
+
+  it("sin resultados devuelve la lista vacía", async () => {
+    hacerQueHaciendaResponda(200, { total: 0, cantidad: 0, cabys: [] });
+
+    expect(await buscarEnCabys("zzqxwv")).toEqual({ ok: true, resultados: [] });
+  });
+
+  // La pantalla deja escribir el código a mano cuando la API no contesta, así que
+  // ninguna falla de la API puede salir como una excepción. El 429 es el aviso de
+  // que se pasó el límite de solicitudes.
+  it.each([429, 500, 503])(
+    "con un %i dice que Hacienda no respondió",
+    async (estado) => {
+      hacerQueHaciendaResponda(estado, { message: "..." });
+
+      expect(await buscarEnCabys("desarrollo")).toEqual({
+        ok: false,
+        motivo: "sin-respuesta",
+      });
+    },
+  );
+
+  it("si la conexión falla o se agota el tiempo dice que Hacienda no respondió", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new DOMException("The operation timed out.", "TimeoutError");
+      }),
+    );
+
+    expect(await buscarEnCabys("desarrollo")).toEqual({
+      ok: false,
+      motivo: "sin-respuesta",
+    });
+  });
+
+  it("si la respuesta no trae la forma esperada dice que Hacienda no respondió", async () => {
+    hacerQueHaciendaResponda(200, [DESARROLLO_DE_SOFTWARE]);
+
+    expect(await buscarEnCabys("desarrollo")).toEqual({
       ok: false,
       motivo: "sin-respuesta",
     });
