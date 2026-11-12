@@ -9,19 +9,32 @@
 }
 
 .campo input,
-.campo select {
+.campo select,
+.campo textarea {
   width: 100%;
   min-width: 0;
-  height: var(--alto-control);
-  padding: 0 var(--e3);
   border: 1px solid var(--borde-campo);
   border-radius: var(--radio-control);
   background: var(--tarjeta);
   transition: border-color var(--rapido) var(--curva);
 }
 
+.campo input,
+.campo select {
+  height: var(--alto-control);
+  padding: 0 var(--e3);
+}
+
+/* Tres líneas a la vista. Quien escribe más lo estira hacia abajo. */
+.campo textarea {
+  min-height: var(--alto-area);
+  padding: var(--e2) var(--e3);
+  resize: vertical;
+}
+
 .campo input:hover,
-.campo select:hover {
+.campo select:hover,
+.campo textarea:hover {
   border-color: var(--texto-2);
 }
 
@@ -33,7 +46,8 @@
   background-position: right var(--e2) center;
 }
 
-.campo input[aria-invalid="true"] {
+.campo input[aria-invalid="true"],
+.campo textarea[aria-invalid="true"] {
   border-color: var(--mal);
 }
 
@@ -50,8 +64,13 @@
 /* En un teléfono, iOS agranda la página si la letra del campo mide menos de 16 px. */
 @media (pointer: coarse) {
   .campo input,
+  .campo select,
+  .campo textarea {
+    font: 400 var(--letra-campo-tactil) var(--sans);
+  }
+
+  .campo input,
   .campo select {
     height: var(--alto-control-ancho);
-    font: 400 var(--letra-campo-tactil) var(--sans);
   }
 }

@@ -33,3 +33,14 @@ insert into public.emisores (
   'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '01', '100000042',
   'Mariana Solís Vargas', 'mariana@ejemplo.test', '6201.0'
 );
+
+-- Dos clientes del exterior de ese emisor.
+insert into public.clientes (emisor_id, numero_identificacion, nombre, correo, otras_senas)
+select id, cliente.numero_identificacion, cliente.nombre, cliente.correo, cliente.otras_senas
+from public.emisores,
+  (values
+    ('US000000042', 'Northfield Ejemplo LLC', 'pagos@northfield-ejemplo.test',
+     '500 Example Street, Suite 12, Austin, TX 78701, Estados Unidos'),
+    ('DE000000017', 'Estudio Boreal Ejemplo GmbH', 'cuentas@boreal-ejemplo.test', null)
+  ) as cliente (numero_identificacion, nombre, correo, otras_senas)
+where usuario_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';

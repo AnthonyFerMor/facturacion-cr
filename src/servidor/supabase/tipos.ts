@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      clientes: {
+        Row: {
+          correo: string;
+          creado_en: string;
+          emisor_id: string;
+          id: string;
+          nombre: string;
+          numero_identificacion: string;
+          otras_senas: string | null;
+          tipo_identificacion: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          correo: string;
+          creado_en?: string;
+          emisor_id?: string;
+          id?: string;
+          nombre: string;
+          numero_identificacion: string;
+          otras_senas?: string | null;
+          tipo_identificacion?: string;
+        };
+        Update: {
+          correo?: string;
+          creado_en?: string;
+          emisor_id?: string;
+          id?: string;
+          nombre?: string;
+          numero_identificacion?: string;
+          otras_senas?: string | null;
+          tipo_identificacion?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "clientes_emisor_id_fkey";
+            columns: ["emisor_id"];
+            isOneToOne: false;
+            referencedRelation: "emisores";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       emisores: {
         Row: {
           actividad_economica: string;
@@ -57,7 +99,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      emisor_actual: { Args: Record<PropertyKey, never>; Returns: string };
     };
     Enums: {
       [_ in never]: never;

@@ -1,9 +1,13 @@
-import type { InputHTMLAttributes } from "react";
+import {
+  type InputHTMLAttributes,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+  useId,
+} from "react";
 
 import estilos from "./campo.module.css";
 
-type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "id"> & {
-  id: string;
+type Comunes = {
   etiqueta: string;
   /** Texto fijo debajo del campo. */
   ayuda?: string;
@@ -11,31 +15,72 @@ type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "id"> & {
   error?: string;
 };
 
-/** Un campo de texto con su etiqueta, su ayuda y su error. */
-export function Campo({ id, etiqueta, ayuda, error, ...resto }: Props) {
-  const idAyuda = ayuda ? `${id}-ayuda` : undefined;
-  const idError = error ? `${id}-error` : undefined;
-  const descritoPor = [idAyuda, idError].filter(Boolean).join(" ");
+type PropsDeCampo = Comunes & Omit<InputHTMLAttributes<HTMLInputElement>, "id">;
 
+type PropsDeArea = Comunes &
+  Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "id">;
+
+// El `id` de cada control sale de `useId` y no de quien lo usa. Next.js deja en
+// el documento, ocultas, las pantallas recién visitadas: con un `id` escrito a
+// mano, dos pantallas con un campo «nombre» compartirían la etiqueta.
+
+/** Un campo de texto con su etiqueta, su ayuda y su error. */
+export function Campo({ etiqueta, ayuda, error, ...resto }: PropsDeCampo) {
+  const id = useId();
+  return (
+    <Marco id={id} etiqueta={etiqueta} ayuda={ayuda} error={error}>
+      <input id={id} {...descripcion(id, ayuda, error)} {...resto} />
+    </Marco>
+  );
+}
+
+/** Un campo de varias líneas, para un texto largo como una dirección. */
+export function AreaDeTexto({ etiqueta, ayuda, error, ...resto }: PropsDeArea) {
+  const id = useId();
+  return (
+    <Marco id={id} etiqueta={etiqueta} ayuda={ayuda} error={error}>
+      <textarea id={id} {...descripcion(id, ayuda, error)} {...resto} />
+    </Marco>
+  );
+}
+
+const idDeAyuda = (id: string) => `${id}-ayuda`;
+const idDeError = (id: string) => `${id}-error`;
+
+/** La etiqueta, la ayuda y el error que rodean a un control. */
+function Marco({
+  id,
+  etiqueta,
+  ayuda,
+  error,
+  children,
+}: Comunes & { id: string; children: ReactNode }) {
   return (
     <div className={estilos.campo}>
       <label htmlFor={id}>{etiqueta}</label>
-      <input
-        id={id}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={descritoPor || undefined}
-        {...resto}
-      />
+      {children}
       {ayuda ? (
-        <p id={idAyuda} className={estilos.ayuda}>
+        <p id={idDeAyuda(id)} className={estilos.ayuda}>
           {ayuda}
         </p>
       ) : null}
       {error ? (
-        <p id={idError} className={estilos.error} role="alert">
+        <p id={idDeError(id)} className={estilos.error} role="alert">
           {error}
         </p>
       ) : null}
     </div>
   );
+}
+
+/** Los atributos que le dicen a un lector de pantalla cuál es la ayuda del control y cuál su error. */
+function descripcion(id: string, ayuda?: string, error?: string) {
+  const descritoPor = [ayuda && idDeAyuda(id), error && idDeError(id)]
+    .filter(Boolean)
+    .join(" ");
+
+  return {
+    "aria-invalid": error ? true : undefined,
+    "aria-describedby": descritoPor || undefined,
+  } as const;
 }

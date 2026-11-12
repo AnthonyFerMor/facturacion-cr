@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
 import { SUPABASE_LLAVE_PUBLICA, SUPABASE_URL } from "../entorno";
@@ -31,4 +32,19 @@ export async function crearClienteSupabase() {
       },
     },
   });
+}
+
+/**
+ * El cliente de Supabase de quien tiene sesión; a quien no la tiene lo manda a entrar.
+ * La usan las pantallas y las acciones. Una acción del servidor se puede llamar
+ * desde cualquier ruta, también desde las públicas, así que cada una comprueba
+ * la sesión por su cuenta.
+ */
+export async function clienteConSesion() {
+  const supabase = await crearClienteSupabase();
+  const { data } = await supabase.auth.getClaims();
+  if (!data) {
+    redirect("/entrar");
+  }
+  return { supabase, usuario: data.claims.sub };
 }

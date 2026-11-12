@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  identificacionDeExtranjeroValida,
   numeroDeIdentificacionValido,
   tipoDeIdentificacion,
 } from "./identificacion";
@@ -39,5 +40,29 @@ describe("número de identificación del emisor", () => {
   it("rechaza un tipo que un emisor no puede tener", () => {
     expect(tipoDeIdentificacion("05")).toBeUndefined();
     expect(numeroDeIdentificacionValido("05", "ABC123")).toBe(false);
+  });
+});
+
+// El receptor de una factura de exportación lleva el número que usa en su país.
+// El Anexo lo limita a 20 caracteres, números y letras; con otra cosa, Hacienda
+// rechaza el comprobante.
+describe("identificación de un cliente del exterior", () => {
+  it.each([
+    ["US000000042", "letras y números"],
+    ["000000042", "solo números"],
+    ["A", "un solo carácter"],
+    ["AB123456789012345678", "20 caracteres, el máximo"],
+  ])("acepta «%s»: %s", (numero) => {
+    expect(identificacionDeExtranjeroValida(numero)).toBe(true);
+  });
+
+  it.each([
+    ["AB1234567890123456789", "21 caracteres"],
+    ["00-0000042", "no lleva guiones"],
+    ["US 000000042", "no lleva espacios"],
+    ["ÑU000000042", "solo letras sin tilde ni eñe"],
+    ["", "no puede ir vacía"],
+  ])("rechaza «%s»: %s", (numero) => {
+    expect(identificacionDeExtranjeroValida(numero)).toBe(false);
   });
 });

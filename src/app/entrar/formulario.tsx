@@ -60,7 +60,6 @@ function Formulario({
       {children}
       <form action={enviar} className={estilos.formulario}>
         <Campo
-          id="correo"
           etiqueta="Correo"
           name="correo"
           type="email"

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+import { Aviso } from "@/componentes/aviso";
+import { Pagina } from "@/componentes/pagina";
+import { PorVisita } from "@/componentes/por-visita";
 import { EMISOR_NUEVO, type ValoresDelEmisor } from "@/servidor/emisor/esquema";
 import { crearClienteSupabase } from "@/servidor/supabase/cliente";
 
@@ -16,20 +18,14 @@ const COLUMNAS =
 
 export default function PaginaEmisor() {
   return (
-    <main className={estilos.pagina}>
-      <Link href="/" className={estilos.marca}>
-        Facturación CR
-      </Link>
-      <div className={estilos.cabeza}>
-        <h1 className={estilos.titulo}>Emisor</h1>
-        <p className={estilos.texto}>
-          Estos datos salen en cada factura que emita
-        </p>
-      </div>
+    <Pagina
+      titulo="Emisor"
+      descripcion="Estos datos salen en cada factura que emita"
+    >
       <Suspense fallback={<p className={estilos.texto}>Cargando el emisor…</p>}>
         <EmisorGuardado />
       </Suspense>
-    </main>
+    </Pagina>
   );
 }
 
@@ -48,9 +44,9 @@ async function EmisorGuardado() {
     .maybeSingle();
   if (error) {
     return (
-      <p className={estilos.aviso} role="alert">
+      <Aviso>
         No se pudo cargar el emisor. Recargue la página en un momento.
-      </p>
+      </Aviso>
     );
   }
 
@@ -59,5 +55,9 @@ async function EmisorGuardado() {
     ...EMISOR_NUEVO,
     correo: sesion.claims.email ?? "",
   };
-  return <FormularioEmisor inicial={inicial} />;
+  return (
+    <PorVisita>
+      <FormularioEmisor inicial={inicial} />
+    </PorVisita>
+  );
 }

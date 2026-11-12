@@ -1,15 +1,16 @@
-import type { SelectHTMLAttributes } from "react";
+import { type SelectHTMLAttributes, useId } from "react";
 
 import estilos from "./campo.module.css";
 
 type Props = Omit<SelectHTMLAttributes<HTMLSelectElement>, "id"> & {
-  id: string;
   etiqueta: string;
   opciones: readonly { valor: string; texto: string }[];
 };
 
 /** Una lista desplegable con su etiqueta. Se ve igual que un campo de texto. */
-export function Seleccion({ id, etiqueta, opciones, ...resto }: Props) {
+export function Seleccion({ etiqueta, opciones, ...resto }: Props) {
+  // Por qué el `id` no viene de afuera: ver campo.tsx.
+  const id = useId();
   return (
     <div className={estilos.campo}>
       <label htmlFor={id}>{etiqueta}</label>

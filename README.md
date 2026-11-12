@@ -20,7 +20,7 @@ npm run setup
 npm run dev
 ```
 
-`npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type an email address and open the link that arrives in the local mailbox at http://localhost:54724. The database comes with a sample person and their issuer profile, `mariana@ejemplo.test`; any other address signs in without one. The link points to port 3000, so the app has to run there.
+`npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type an email address and open the link that arrives in the local mailbox at http://localhost:54724. The database comes with a sample person, `mariana@ejemplo.test`, with an issuer profile and two customers; any other address signs in without one. The link points to port 3000, so the app has to run there.
 
 Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` and `npm run build`.
 
