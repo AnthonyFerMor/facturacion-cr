@@ -1,0 +1,58 @@
+/* Sin `contain`, el ancho de la tabla empuja a la página en una pantalla angosta
+   aunque esta caja tenga su propio desplazamiento. */
+.envoltura {
+  /* Ancla el título oculto, para que se desplace con la tabla. */
+  position: relative;
+  overflow-x: auto;
+  contain: inline-size;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Oculto a la vista, presente para los lectores de pantalla. */
+.titulo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tabla th {
+  height: var(--alto-control);
+  padding: 0 var(--e3);
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--texto-3);
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla td {
+  height: var(--alto-fila);
+  padding: 0 var(--e3);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla tbody tr {
+  transition: background-color var(--rapido) var(--curva);
+}
+
+.tabla tbody tr:hover {
+  background: var(--fondo);
+}
+
+.tabla th[data-alinear="derecha"],
+.tabla td[data-alinear="derecha"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

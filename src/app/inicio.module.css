@@ -1,0 +1,26 @@
+.pagina {
+  display: grid;
+  justify-items: start;
+  gap: var(--e4);
+  padding: var(--e8);
+}
+
+.marca {
+  font: 500 var(--letra-marca) var(--sans);
+}
+
+.sesion {
+  display: grid;
+  justify-items: start;
+  gap: var(--e3);
+}
+
+.apagado {
+  color: var(--texto-3);
+}
+
+@media (max-width: 480px) {
+  .pagina {
+    padding: var(--e4);
+  }
+}

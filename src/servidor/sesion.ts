@@ -31,7 +31,7 @@ export async function pedirEnlace(
     return {
       paso: "formulario",
       correo: escrito,
-      error: "Escriba un correo válido, como nombre@ejemplo.com.",
+      error: "Escriba un correo válido, como nombre@ejemplo.com",
     };
   }
 

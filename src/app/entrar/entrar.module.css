@@ -1,0 +1,73 @@
+/* La pantalla de entrada es una hoja sobre el fondo, con su membrete. */
+.pagina {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--e6) var(--e4);
+}
+
+.hoja {
+  width: 100%;
+  max-width: 400px;
+  display: grid;
+  gap: var(--e6);
+  padding: var(--e10);
+  background: var(--tarjeta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-hoja);
+  box-shadow: var(--sombra-hoja);
+}
+
+.membrete {
+  display: grid;
+  padding-bottom: var(--e4);
+  border-bottom: 1px solid var(--linea);
+}
+
+.marca {
+  font: 500 var(--letra-marca) var(--sans);
+}
+
+.descripcion {
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--texto-3);
+}
+
+.cabeza {
+  display: grid;
+  gap: var(--e2);
+}
+
+.titulo {
+  font: 500 var(--letra-titulo) var(--sans);
+}
+
+/* Un correo largo se parte en vez de salirse de la hoja. */
+.texto {
+  color: var(--texto-2);
+  overflow-wrap: anywhere;
+}
+
+.aviso {
+  padding: var(--e3) var(--e4);
+  border: 1px solid var(--mal-linea);
+  border-radius: var(--radio-control);
+  background: var(--mal-suave);
+}
+
+.formulario {
+  display: grid;
+  gap: var(--e4);
+}
+
+.enviado {
+  display: grid;
+  justify-items: start;
+  gap: var(--e6);
+}
+
+@media (max-width: 480px) {
+  .hoja {
+    padding: var(--e6);
+  }
+}

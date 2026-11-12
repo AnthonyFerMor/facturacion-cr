@@ -1,0 +1,51 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+  height: var(--alto-control);
+  padding: 0 var(--e4);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio-control);
+  background: var(--tarjeta);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--rapido) var(--curva),
+    border-color var(--rapido) var(--curva),
+    transform var(--rapido) var(--curva);
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.principal {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: var(--sobre-acento);
+}
+
+/* Solo con puntero y con el botón activo: en una pantalla táctil el color quedaría
+   pegado después de tocar, y un botón deshabilitado no tiene que parecer que responde. */
+@media (hover: hover) {
+  .boton:enabled:hover {
+    background: var(--elevado);
+  }
+
+  .principal:enabled:hover {
+    background: var(--acento-fuerte);
+    border-color: var(--acento-fuerte);
+  }
+}
+
+.ancho {
+  width: 100%;
+  height: var(--alto-control-ancho);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
