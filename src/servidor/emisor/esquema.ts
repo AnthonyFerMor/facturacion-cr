@@ -5,6 +5,8 @@ import {
   tipoDeIdentificacion,
 } from "@/dominio/identificacion";
 
+import { erroresPorCampo, valoresDe } from "../formulario";
+
 /** Los campos del formulario del emisor, con el nombre de su columna. */
 export const CAMPOS_DEL_EMISOR = [
   "tipo_identificacion",
@@ -100,24 +102,12 @@ export type RevisionDelEmisor =
  */
 export function revisarEmisor(valores: ValoresDelEmisor): RevisionDelEmisor {
   const resultado = esquemaEmisor.safeParse(valores);
-  if (resultado.success) {
-    return { ok: true, emisor: resultado.data };
-  }
-  const errores: ErroresDelEmisor = {};
-  for (const problema of resultado.error.issues) {
-    const campo = problema.path[0] as CampoDelEmisor;
-    // Se muestra un error por campo: el primero.
-    errores[campo] ??= problema.message;
-  }
-  return { ok: false, errores };
+  return resultado.success
+    ? { ok: true, emisor: resultado.data }
+    : { ok: false, errores: erroresPorCampo(resultado.error) };
 }
 
 /** Lee del formulario los campos del emisor, sin espacios a los lados. */
 export function valoresDelFormulario(datos: FormData): ValoresDelEmisor {
-  return Object.fromEntries(
-    CAMPOS_DEL_EMISOR.map((campo) => [
-      campo,
-      String(datos.get(campo) ?? "").trim(),
-    ]),
-  ) as ValoresDelEmisor;
+  return valoresDe(datos, CAMPOS_DEL_EMISOR);
 }

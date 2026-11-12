@@ -40,14 +40,19 @@ async function Sesion() {
     <div className={estilos.sesion}>
       <p>Sesión iniciada como {data.claims.email}</p>
       {emisor ? (
-        <p>
-          Emisor: {emisor.nombre},{" "}
-          {tipoDeIdentificacion(
-            emisor.tipo_identificacion,
-          )?.nombre.toLowerCase()}{" "}
-          {emisor.numero_identificacion}.{" "}
-          <Link href="/emisor">Editar el emisor</Link>
-        </p>
+        <>
+          <p>
+            Emisor: {emisor.nombre},{" "}
+            {tipoDeIdentificacion(
+              emisor.tipo_identificacion,
+            )?.nombre.toLowerCase()}{" "}
+            {emisor.numero_identificacion}.{" "}
+            <Link href="/emisor">Editar el emisor</Link>
+          </p>
+          <p>
+            <Link href="/clientes">Clientes</Link>
+          </p>
+        </>
       ) : (
         <p>
           Todavía no hay un emisor. <Link href="/emisor">Crear el emisor</Link>

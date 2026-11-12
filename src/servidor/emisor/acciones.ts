@@ -1,14 +1,12 @@
 "use server";
 
-import { redirect } from "next/navigation";
-
 import { numeroDeIdentificacionValido } from "@/dominio/identificacion";
 import {
   consultarActividades,
   type ConsultaDeActividades,
 } from "@/hacienda/api-publica";
 
-import { crearClienteSupabase } from "../supabase/cliente";
+import { clienteConSesion } from "../supabase/cliente";
 import {
   revisarEmisor,
   valoresDelFormulario,
@@ -25,19 +23,6 @@ export type EstadoDelEmisor = {
 
 // Código de Postgres cuando un valor repite uno que tiene que ser único.
 const VALOR_REPETIDO = "23505";
-
-/**
- * Una acción se puede llamar desde cualquier ruta, también desde las públicas,
- * así que cada una comprueba la sesión por su cuenta.
- */
-async function clienteConSesion() {
-  const supabase = await crearClienteSupabase();
-  const { data } = await supabase.auth.getClaims();
-  if (!data) {
-    redirect("/entrar");
-  }
-  return { supabase, usuario: data.claims.sub };
-}
 
 /** Crea el emisor del usuario o cambia el que ya tiene. */
 export async function guardarEmisor(

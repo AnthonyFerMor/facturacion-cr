@@ -24,7 +24,7 @@ Todo lo que firma o habla con Hacienda corre en el servidor. El SDK pide Node 22
 ```
 src/
   app/          pantallas y rutas de Next.js
-  componentes/  piezas de interfaz compartidas: botón, campo, tabla y estado
+  componentes/  piezas de interfaz compartidas: el marco de las pantallas, botón, campo, tabla y estado
   dominio/      reglas sin dependencias externas: montos, impuestos, clave, fechas y estados
   hacienda/     armado y firma del XML con el SDK, la pasarela (interfaz, simulador e implementación con el SDK) y las consultas a la API pública
   servidor/     acciones del servidor, procesador de trabajos, cifrado, correo y PDF
@@ -60,7 +60,8 @@ Si un trabajo agota sus reintentos, el comprobante pasa a `error` con el detalle
 
 - `emisores`: usuario dueño (cada usuario tiene un solo emisor), tipo y número de identificación (únicos), nombre, correo, actividad económica, sucursal y terminal por defecto, y ambiente (`simulado` o `pruebas`). Las políticas RLS de todas las tablas filtran por el emisor del usuario.
 - `credenciales_hacienda`: por emisor y ambiente, el usuario, la contraseña, la llave .p12 y el PIN, cifrados, y el vencimiento del certificado. No tiene políticas para usuarios: solo la lee el servidor.
-- `clientes` y `servicios`. El servicio guarda su código CAByS y la descripción con que se eligió.
+- `clientes`: emisor, identificación, nombre, correo y otras señas. Por ahora la identificación es siempre del tipo 05, «Extranjero No Domiciliado», con un número de hasta 20 letras y números. Quien crea un cliente no manda de qué emisor es: la base pone el del usuario con `emisor_actual()`, la misma función con la que comparan las políticas RLS.
+- `servicios`. Guarda su código CAByS y la descripción con que se eligió.
 - `comprobantes`: tipo (09 exportación, 03 nota de crédito y, si se hace la última etapa, 01 factura), consecutivo, clave, situación, fecha de emisión, código de seguridad, moneda, tipo de cambio, totales, copia de emisor y receptor, referencia (para nota de crédito y reemisión), estado, rutas de los archivos y mensaje de Hacienda.
 - `lineas_comprobante`: código CAByS, cantidad, unidad, precio, impuesto y montos de cada línea.
 - `consecutivos`: emisor, ambiente, tipo, sucursal, terminal y último número usado.

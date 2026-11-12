@@ -1,0 +1,6 @@
+.aviso {
+  padding: var(--e3) var(--e4);
+  border: 1px solid var(--mal-linea);
+  border-radius: var(--radio-control);
+  background: var(--mal-suave);
+}

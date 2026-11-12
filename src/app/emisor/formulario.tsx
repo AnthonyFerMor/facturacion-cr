@@ -1,10 +1,13 @@
 "use client";
 
-import { type FormEvent, useActionState, useState, useTransition } from "react";
+import { useActionState, useState, useTransition } from "react";
 
+import { Aviso } from "@/componentes/aviso";
 import { Boton } from "@/componentes/boton";
 import { Campo } from "@/componentes/campo";
+import forma from "@/componentes/formulario.module.css";
 import { Seleccion } from "@/componentes/seleccion";
+import { useFormulario } from "@/componentes/use-formulario";
 import {
   TIPOS_DE_IDENTIFICACION,
   tipoDeIdentificacion,
@@ -20,7 +23,6 @@ import {
   revisarEmisor,
   valoresDelFormulario,
   type CampoDelEmisor,
-  type ErroresDelEmisor,
   type ValoresDelEmisor,
 } from "@/servidor/emisor/esquema";
 
@@ -33,52 +35,36 @@ const OPCIONES_DE_TIPO = TIPOS_DE_IDENTIFICACION.map((tipo) => ({
   texto: tipo.nombre,
 }));
 
+// La misma revisión que hace el servidor, antes de enviar.
+function erroresDelFormulario(datos: FormData) {
+  const revision = revisarEmisor(valoresDelFormulario(datos));
+  return revision.ok ? null : revision.errores;
+}
+
 export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
-  const [valores, setValores] = useState(inicial);
   const [estado, enviar, guardando] = useActionState(guardarEmisor, SIN_ENVIAR);
-  // Errores de la revisión que se hace en el navegador. Mientras haya, tapan los
-  // que devolvió el servidor en el envío anterior.
-  const [erroresLocales, setErroresLocales] = useState<ErroresDelEmisor | null>(
-    null,
-  );
-  // Campos cambiados desde el último envío: su error ya no habla de lo que hay escrito.
-  const [cambiados, setCambiados] = useState<ReadonlySet<CampoDelEmisor>>(
-    () => new Set(),
-  );
+  const formulario = useFormulario({
+    inicial,
+    revisar: erroresDelFormulario,
+    erroresDelServidor: estado.errores,
+  });
   const [consulta, setConsulta] = useState<ConsultaDeActividades | null>(null);
   const [consultando, iniciarConsulta] = useTransition();
 
-  const erroresDelEnvio = erroresLocales ?? estado.errores ?? {};
-  const errorDe = (campo: CampoDelEmisor) =>
-    cambiados.has(campo) ? undefined : erroresDelEnvio[campo];
-  const sinCambios = cambiados.size === 0;
+  const { valores, errorDe, respuestaVigente } = formulario;
   const tipo = tipoDeIdentificacion(valores.tipo_identificacion);
   const actividades = consulta?.ok ? consulta.actividades : [];
 
   function cambiar(campo: CampoDelEmisor, valor: string) {
-    setValores((actuales) => ({ ...actuales, [campo]: valor }));
-    setCambiados((anteriores) => {
-      const ahora = new Set(anteriores).add(campo);
+    if (campo === "tipo_identificacion") {
       // La regla del número depende del tipo.
-      return campo === "tipo_identificacion"
-        ? ahora.add("numero_identificacion")
-        : ahora;
-    });
+      formulario.cambiar(campo, valor, "numero_identificacion");
+    } else {
+      formulario.cambiar(campo, valor);
+    }
     // Las actividades son de la identificación consultada: si cambia, ya no valen.
     if (campo === "tipo_identificacion" || campo === "numero_identificacion") {
       setConsulta(null);
-    }
-  }
-
-  // La misma revisión que hace el servidor, antes de enviar.
-  function revisarAntesDeEnviar(evento: FormEvent<HTMLFormElement>) {
-    const revision = revisarEmisor(
-      valoresDelFormulario(new FormData(evento.currentTarget)),
-    );
-    setErroresLocales(revision.ok ? null : revision.errores);
-    setCambiados(new Set());
-    if (!revision.ok) {
-      evento.preventDefault();
     }
   }
 
@@ -86,12 +72,7 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
     const numero = valores.numero_identificacion.trim();
     const error = errorDelNumero(valores.tipo_identificacion, numero);
     if (error) {
-      setErroresLocales({ ...erroresDelEnvio, numero_identificacion: error });
-      setCambiados((anteriores) => {
-        const ahora = new Set(anteriores);
-        ahora.delete("numero_identificacion");
-        return ahora;
-      });
+      formulario.marcarError("numero_identificacion", error);
       return;
     }
     iniciarConsulta(async () => {
@@ -102,7 +83,7 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
       setConsulta(resultado);
       if (resultado.ok) {
         // El nombre de Hacienda sirve de punto de partida si todavía no hay uno.
-        setValores((actuales) =>
+        formulario.ponerValores((actuales) =>
           actuales.nombre
             ? actuales
             : { ...actuales, nombre: resultado.nombre },
@@ -114,15 +95,14 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
   return (
     <form
       action={enviar}
-      onSubmit={revisarAntesDeEnviar}
+      onSubmit={formulario.alEnviar}
       noValidate
-      className={estilos.formulario}
+      className={forma.formulario}
     >
-      <fieldset className={estilos.grupo}>
-        <legend className={estilos.leyenda}>Identificación</legend>
-        <div className={estilos.campos}>
+      <fieldset className={forma.grupo}>
+        <legend className={forma.leyenda}>Identificación</legend>
+        <div className={forma.campos}>
           <Seleccion
-            id="tipo_identificacion"
             name="tipo_identificacion"
             etiqueta="Tipo de identificación"
             opciones={OPCIONES_DE_TIPO}
@@ -132,7 +112,6 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
             }
           />
           <Campo
-            id="numero_identificacion"
             name="numero_identificacion"
             etiqueta="Número"
             inputMode="numeric"
@@ -155,11 +134,10 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
         </div>
       </fieldset>
 
-      <fieldset className={estilos.grupo}>
-        <legend className={estilos.leyenda}>Nombre y correo</legend>
-        <div className={estilos.campos}>
+      <fieldset className={forma.grupo}>
+        <legend className={forma.leyenda}>Nombre y correo</legend>
+        <div className={forma.campos}>
           <Campo
-            id="nombre"
             name="nombre"
             etiqueta="Nombre"
             autoComplete="name"
@@ -169,7 +147,6 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
             error={errorDe("nombre")}
           />
           <Campo
-            id="correo"
             name="correo"
             etiqueta="Correo"
             type="email"
@@ -182,16 +159,15 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
         </div>
       </fieldset>
 
-      <fieldset className={estilos.grupo}>
-        <legend className={estilos.leyenda}>Actividad económica</legend>
-        <div className={estilos.campos}>
+      <fieldset className={forma.grupo}>
+        <legend className={forma.leyenda}>Actividad económica</legend>
+        <div className={forma.campos}>
           <ListaDeActividades
             actividades={actividades}
             elegida={valores.actividad_economica}
             alElegir={(codigo) => cambiar("actividad_economica", codigo)}
           />
           <Campo
-            id="actividad_economica"
             name="actividad_economica"
             etiqueta="Código de actividad"
             autoComplete="off"
@@ -205,12 +181,11 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
         </div>
       </fieldset>
 
-      <fieldset className={estilos.grupo}>
-        <legend className={estilos.leyenda}>Numeración</legend>
-        <div className={estilos.campos}>
+      <fieldset className={forma.grupo}>
+        <legend className={forma.leyenda}>Numeración</legend>
+        <div className={forma.campos}>
           <div className={estilos.dos}>
             <Campo
-              id="sucursal"
               name="sucursal"
               etiqueta="Sucursal"
               inputMode="numeric"
@@ -220,7 +195,6 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
               error={errorDe("sucursal")}
             />
             <Campo
-              id="terminal"
               name="terminal"
               etiqueta="Terminal"
               inputMode="numeric"
@@ -237,21 +211,17 @@ export function FormularioEmisor({ inicial }: { inicial: ValoresDelEmisor }) {
         </div>
       </fieldset>
 
-      <div className={estilos.pie}>
+      <div className={forma.pie}>
         <Boton type="submit" variante="principal" disabled={guardando}>
           {guardando ? "Guardando…" : "Guardar emisor"}
         </Boton>
         <div role="status">
-          {estado.guardado && sinCambios && !erroresLocales ? (
+          {estado.guardado && respuestaVigente ? (
             <p className={estilos.guardado}>Emisor guardado</p>
           ) : null}
         </div>
       </div>
-      {estado.error && sinCambios ? (
-        <p className={estilos.aviso} role="alert">
-          {estado.error}
-        </p>
-      ) : null}
+      {estado.error && respuestaVigente ? <Aviso>{estado.error}</Aviso> : null}
     </form>
   );
 }

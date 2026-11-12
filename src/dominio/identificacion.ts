@@ -1,5 +1,6 @@
-// Tipos de identificación de un emisor y el formato de su número, según la nota 4
-// del Anexo de la versión 4.4.
+// Tipos de identificación y el formato de su número, según la nota 4 del Anexo
+// de la versión 4.4. Un emisor tiene uno de los cuatro tipos locales; el cliente
+// de una factura de exportación es un «Extranjero No Domiciliado».
 
 export const TIPOS_DE_IDENTIFICACION = [
   {
@@ -44,4 +45,24 @@ export function numeroDeIdentificacionValido(
   numero: string,
 ): boolean {
   return tipoDeIdentificacion(codigo)?.patron.test(numero) ?? false;
+}
+
+/**
+ * El tipo de identificación de un cliente del exterior. Hacienda no lo busca en
+ * ningún padrón: el número es el que el cliente usa en su país.
+ *
+ * El Anexo dice «números y letras» sin más detalle. Se aceptan las letras del
+ * alfabeto inglés: es la lectura más estrecha, así que un número que la cumple
+ * cumple cualquier otra.
+ */
+export const EXTRANJERO_NO_DOMICILIADO = {
+  codigo: "05",
+  nombre: "Extranjero no domiciliado",
+  formato: "hasta 20 letras y números, sin espacios ni guiones",
+  patron: /^[A-Za-z0-9]{1,20}$/,
+} as const;
+
+/** Dice si el número sirve como identificación de un cliente del exterior. */
+export function identificacionDeExtranjeroValida(numero: string): boolean {
+  return EXTRANJERO_NO_DOMICILIADO.patron.test(numero);
 }
