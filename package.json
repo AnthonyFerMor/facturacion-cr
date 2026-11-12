@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "test:db": "supabase test db",
     "db:types": "supabase gen types --lang typescript --schema public > src/servidor/supabase/tipos.ts && prettier --write src/servidor/supabase/tipos.ts"
   },

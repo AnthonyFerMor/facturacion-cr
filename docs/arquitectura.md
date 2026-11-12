@@ -26,7 +26,7 @@ src/
   app/          pantallas y rutas de Next.js
   componentes/  piezas de interfaz compartidas: botón, campo, tabla y estado
   dominio/      reglas sin dependencias externas: montos, impuestos, clave, fechas y estados
-  hacienda/     armado y firma del XML con el SDK, y la pasarela: interfaz, simulador e implementación con el SDK
+  hacienda/     armado y firma del XML con el SDK, la pasarela (interfaz, simulador e implementación con el SDK) y las consultas a la API pública
   servidor/     acciones del servidor, procesador de trabajos, cifrado, correo y PDF
 supabase/
   migrations/   esquema, políticas RLS y funciones

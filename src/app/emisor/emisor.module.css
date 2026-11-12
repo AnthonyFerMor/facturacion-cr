@@ -1,0 +1,148 @@
+.pagina {
+  display: grid;
+  justify-items: start;
+  gap: var(--e6);
+  padding: var(--e8);
+}
+
+.marca {
+  font: 500 var(--letra-marca) var(--sans);
+  text-decoration: none;
+}
+
+.cabeza {
+  display: grid;
+  gap: var(--e2);
+}
+
+.titulo {
+  font: 500 var(--letra-titulo) var(--sans);
+}
+
+.texto {
+  color: var(--texto-2);
+}
+
+/* Los grupos quedan más separados entre sí que los campos de un mismo grupo. */
+.formulario {
+  display: grid;
+  gap: var(--e8);
+  width: 100%;
+  max-width: 480px;
+}
+
+.grupo {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.leyenda {
+  margin-bottom: var(--e3);
+  padding: 0;
+  font: 500 var(--letra-base) var(--sans);
+}
+
+.campos {
+  display: grid;
+  gap: var(--e4);
+}
+
+.consulta {
+  display: grid;
+  justify-items: start;
+  gap: var(--e3);
+}
+
+/* Cada campo conserva su alto: si uno muestra un error, el otro no se estira. */
+.dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: var(--e4);
+}
+
+.actividades {
+  display: grid;
+  gap: var(--e2);
+}
+
+.actividad {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--e3);
+  width: 100%;
+  min-height: var(--alto-control-ancho);
+  padding: var(--e3);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio-control);
+  background: var(--tarjeta);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--rapido) var(--curva),
+    border-color var(--rapido) var(--curva);
+}
+
+@media (hover: hover) {
+  .actividad:hover {
+    background: var(--elevado);
+  }
+}
+
+.actividad:active {
+  background: var(--elevado);
+}
+
+/* La elegida se distingue por el borde y por su texto, no solo por el color. */
+.actividad[aria-pressed="true"] {
+  border-color: var(--acento);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.actividad[aria-pressed="true"] .nota {
+  font-weight: 500;
+  color: var(--acento);
+}
+
+.codigo {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.descripcion {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nota,
+.ayuda {
+  font: 400 var(--letra-nota) var(--sans);
+  color: var(--texto-3);
+}
+
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e4);
+}
+
+.guardado {
+  color: var(--ok-tinta);
+}
+
+.aviso {
+  padding: var(--e3) var(--e4);
+  border: 1px solid var(--mal-linea);
+  border-radius: var(--radio-control);
+  background: var(--mal-suave);
+}
+
+@media (max-width: 480px) {
+  .pagina {
+    padding: var(--e4);
+  }
+}

@@ -54,6 +54,7 @@ escribirVariables({
 console.log(`
 Listo. Variables escritas en ${ARCHIVO_ENV}.
   App:     npm run dev
+  Entrar:  mariana@ejemplo.test (persona de ejemplo)
   Correos: ${estado.MAILPIT_URL}
   Base:    ${estado.STUDIO_URL}
 `);

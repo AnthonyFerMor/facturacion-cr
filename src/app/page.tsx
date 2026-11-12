@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { Boton } from "@/componentes/boton";
+import { tipoDeIdentificacion } from "@/dominio/identificacion";
 import { salir } from "@/servidor/sesion";
 import { crearClienteSupabase } from "@/servidor/supabase/cliente";
 
@@ -28,9 +30,29 @@ async function Sesion() {
     redirect("/entrar");
   }
 
+  // Las políticas RLS dejan ver solo el emisor propio.
+  const { data: emisor } = await supabase
+    .from("emisores")
+    .select("nombre, tipo_identificacion, numero_identificacion")
+    .maybeSingle();
+
   return (
     <div className={estilos.sesion}>
       <p>Sesión iniciada como {data.claims.email}</p>
+      {emisor ? (
+        <p>
+          Emisor: {emisor.nombre},{" "}
+          {tipoDeIdentificacion(
+            emisor.tipo_identificacion,
+          )?.nombre.toLowerCase()}{" "}
+          {emisor.numero_identificacion}.{" "}
+          <Link href="/emisor">Editar el emisor</Link>
+        </p>
+      ) : (
+        <p>
+          Todavía no hay un emisor. <Link href="/emisor">Crear el emisor</Link>
+        </p>
+      )}
       <form action={salir}>
         <Boton type="submit">Salir</Boton>
       </form>
