@@ -1,0 +1,8 @@
+.texto {
+  color: var(--texto-2);
+}
+
+.busqueda {
+  display: grid;
+  gap: var(--e3);
+}

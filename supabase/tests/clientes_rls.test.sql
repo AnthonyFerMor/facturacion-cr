@@ -1,7 +1,7 @@
 -- Un usuario solo llega a los clientes de su emisor. Si esto falla, un emisor
 -- podría leer la cartera de clientes de otro o cambiar a quién le factura.
 begin;
-select plan(12);
+select plan(13);
 
 -- Dos usuarios con emisor y uno sin emisor, con datos inventados.
 insert into auth.users (id, email) values
@@ -69,6 +69,17 @@ select throws_ok(
   null,
   'Ana no le pasa sus clientes a Beto'
 );
+
+-- Un cambio sin WHERE no pasa por la política de lectura: solo la de cambio frena
+-- que Ana se quede con los clientes de Beto.
+update public.clientes set emisor_id = 'aaaaaaaa-0000-4000-8000-000000000001';
+reset role;
+select results_eq(
+  $$ select nombre from public.clientes where emisor_id = 'bbbbbbbb-0000-4000-8000-000000000002' $$,
+  array['Cliente de Beto'],
+  'Ana no se queda con los clientes de Beto'
+);
+set local role authenticated;
 
 -- El receptor de una factura de exportación va con el tipo 05 y hasta 20 letras y números.
 select throws_ok(

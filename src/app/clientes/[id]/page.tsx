@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Aviso } from "@/componentes/aviso";
 import { Pagina } from "@/componentes/pagina";
 import { PorVisita } from "@/componentes/por-visita";
-import { esIdDeCliente } from "@/servidor/clientes/esquema";
+import { esId } from "@/servidor/formulario";
 import { clienteConSesion } from "@/servidor/supabase/cliente";
 
 import estilos from "../clientes.module.css";
@@ -37,7 +37,7 @@ async function ClienteGuardado({
 }) {
   const { id } = await params;
   const { supabase } = await clienteConSesion();
-  if (!esIdDeCliente(id)) {
+  if (!esId(id)) {
     return <NoExiste />;
   }
 

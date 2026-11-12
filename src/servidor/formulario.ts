@@ -1,4 +1,4 @@
-import type { z } from "zod";
+import { z } from "zod";
 
 /** Lee de un formulario los campos pedidos, sin espacios a los lados. */
 export function valoresDe<Campo extends string>(
@@ -20,4 +20,9 @@ export function erroresPorCampo<Campo extends string>(
     errores[campo] ??= problema.message;
   }
   return errores;
+}
+
+/** Dice si un texto tiene la forma del `id` de una fila, que es un UUID. */
+export function esId(texto: string): boolean {
+  return z.uuid().safeParse(texto).success;
 }

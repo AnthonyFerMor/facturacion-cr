@@ -4,7 +4,7 @@
 
 A web app for electronic invoicing in Costa Rica, made for freelancers who bill clients abroad. It issues the export invoice (document type 09, version 4.4) in US dollars, sends it to the tax authority (Ministerio de Hacienda), follows it until it is accepted or rejected, and keeps the signed XML, the PDF and the response.
 
-Status: early development. The project runs, but it has no screens yet. The plan and the design decisions are in `docs/`, in Spanish, and the work is tracked in the [milestones](https://github.com/AnthonyFerMor/facturacion-cr/milestones).
+Status: in development. You can sign in with an email link and save the issuer profile, foreign customers and services; it does not issue invoices yet. The plan and the design decisions are in `docs/`, in Spanish, and the work is tracked in the [milestones](https://github.com/AnthonyFerMor/facturacion-cr/milestones).
 
 ## Why it exists
 
@@ -20,7 +20,7 @@ npm run setup
 npm run dev
 ```
 
-`npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type an email address and open the link that arrives in the local mailbox at http://localhost:54724. The database comes with a sample person, `mariana@ejemplo.test`, with an issuer profile and two customers; any other address signs in without one. The link points to port 3000, so the app has to run there.
+`npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type an email address and open the link that arrives in the local mailbox at http://localhost:54724. The database comes with a sample person, `mariana@ejemplo.test`, with an issuer profile, two customers and two services; any other address signs in without one. The link points to port 3000, so the app has to run there.
 
 Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` and `npm run build`.
 

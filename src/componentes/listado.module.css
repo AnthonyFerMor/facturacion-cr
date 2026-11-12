@@ -1,0 +1,16 @@
+.listado {
+  display: grid;
+  gap: var(--e4);
+  width: 100%;
+  max-width: 880px;
+}
+
+.acciones {
+  display: flex;
+}
+
+.tarjeta {
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-tarjeta);
+  background: var(--tarjeta);
+}

@@ -52,6 +52,9 @@ async function Sesion() {
           <p>
             <Link href="/clientes">Clientes</Link>
           </p>
+          <p>
+            <Link href="/servicios">Servicios</Link>
+          </p>
         </>
       ) : (
         <p>

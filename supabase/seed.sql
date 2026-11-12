@@ -44,3 +44,17 @@ from public.emisores,
     ('DE000000017', 'Estudio Boreal Ejemplo GmbH', 'cuentas@boreal-ejemplo.test', null)
   ) as cliente (numero_identificacion, nombre, correo, otras_senas)
 where usuario_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+
+-- Dos servicios de ese emisor, con códigos y descripciones del catálogo CAByS.
+insert into public.servicios
+  (emisor_id, detalle, codigo_cabys, descripcion_cabys, unidad_medida, precio_unitario, moneda)
+select id, servicio.detalle, servicio.codigo_cabys, servicio.descripcion_cabys,
+  servicio.unidad_medida, servicio.precio_unitario, 'USD'
+from public.emisores,
+  (values
+    ('Desarrollo de software', '8314300000000',
+     'Servicios de diseño y desarrollo de software originales', 'h', 45.00),
+    ('Consultoría mensual en software', '8313100000100',
+     'Servicios de consultoría en software', 'Sp', 1200.00)
+  ) as servicio (detalle, codigo_cabys, descripcion_cabys, unidad_medida, precio_unitario)
+where usuario_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';

@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { esId } from "../formulario";
 import { clienteConSesion } from "../supabase/cliente";
 import {
-  esIdDeCliente,
   revisarCliente,
   valoresDelFormulario,
   type ErroresDelCliente,
@@ -55,7 +55,7 @@ export async function guardarCliente(
       return { error: NO_SE_GUARDO };
     }
   } else {
-    if (!esIdDeCliente(id)) {
+    if (!esId(id)) {
       return { error: YA_NO_EXISTE };
     }
     // Las políticas RLS esconden los clientes de otro emisor: el cambio no
