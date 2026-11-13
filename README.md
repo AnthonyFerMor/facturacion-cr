@@ -22,7 +22,7 @@ npm run dev
 
 `npm run setup` starts a local Supabase with Docker, applies the migrations and writes `.env.local`. The app opens at http://localhost:3000. To sign in, type an email address and open the link that arrives in the local mailbox at http://localhost:54724. The database comes with a sample person, `mariana@ejemplo.test`, with an issuer profile, two customers and two services; any other address signs in without one. The link points to port 3000, so the app has to run there.
 
-Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` and `npm run build`.
+Before opening a pull request, run `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db`, `npm run build` and `npm run test:e2e`. The browser tests in `npm run test:e2e` use the built app, the local Supabase, a simulated Hacienda API and the Chrome installed on the machine.
 
 ## Documents (in Spanish)
 

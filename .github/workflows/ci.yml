@@ -50,3 +50,13 @@ jobs:
         run: npm run test:db
       - name: Build
         run: npm run build
+      - name: Recorridos en el navegador
+        run: npm run test:e2e
+      # El rastro de Playwright muestra cada paso, la red y la pantalla del que falló.
+      - name: Rastro de los recorridos que fallaron
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: rastros-de-playwright
+          path: test-results/
+          retention-days: 7
