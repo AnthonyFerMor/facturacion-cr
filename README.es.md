@@ -22,7 +22,7 @@ npm run dev
 
 `npm run setup` levanta Supabase local con Docker, aplica las migraciones y escribe `.env.local`. La app abre en http://localhost:3000. Para entrar se escribe un correo y se abre el enlace que llega al buzón local, en http://localhost:54724. La base trae una persona de ejemplo, `mariana@ejemplo.test`, con su emisor, dos clientes y dos servicios; cualquier otro correo entra sin emisor. El enlace apunta al puerto 3000, así que la app tiene que correr ahí.
 
-Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db` y `npm run build`.
+Antes de abrir un PR se corren `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:db`, `npm run build` y `npm run test:e2e`. Los recorridos de `npm run test:e2e` usan la app compilada, Supabase local, una API de Hacienda simulada y el Chrome instalado en la máquina.
 
 ## Documentos
 
