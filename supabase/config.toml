@@ -55,3 +55,14 @@ project_id = "ikkxqqgspbmyzoektkrm"
 [remotes.nube.auth]
 site_url = "https://facturacion-cr.vercel.app"
 enable_signup = false
+
+# En el plan gratis, Supabase no acepta plantillas propias con su correo incorporado. Sin dominio
+# propio, Resend manda desde onboarding@resend.dev y solo al correo de su cuenta, que es el del dueño.
+[remotes.nube.auth.email.smtp]
+enabled = true
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(RESEND_API_KEY)"
+admin_email = "onboarding@resend.dev"
+sender_name = "Facturación CR"
