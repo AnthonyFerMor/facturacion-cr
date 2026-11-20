@@ -46,3 +46,12 @@ content_path = "./supabase/templates/enlace-de-entrada.html"
 [auth.email.template.confirmation]
 subject = "Su enlace para entrar a Facturación CR"
 content_path = "./supabase/templates/enlace-de-entrada.html"
+
+# Proyecto de la nube (docs/despliegue.md). Estos valores reemplazan a los de arriba solo cuando la
+# CLI trabaja contra ese proyecto, como en `supabase config push`.
+[remotes.nube]
+project_id = "ikkxqqgspbmyzoektkrm"
+
+[remotes.nube.auth]
+site_url = "https://facturacion-cr.vercel.app"
+enable_signup = false
